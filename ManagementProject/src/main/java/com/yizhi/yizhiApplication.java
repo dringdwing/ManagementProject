@@ -16,6 +16,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 @EnableAutoConfiguration(exclude = {
         org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
 })
@@ -25,7 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableCaching
 @EnableAsync
-public class yizhiApplication extends SpringBootServletInitializer{
+public class yizhiApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
@@ -43,7 +44,7 @@ public class yizhiApplication extends SpringBootServletInitializer{
         ConfigurableApplicationContext context = SpringApplication.run(yizhiApplication.class, args);
         System.out.println("ヾ(◍°∇°◍)ﾉﾞ    yizhi启动成功      ヾ(◍°∇°◍)ﾉﾞ\n");
 
-        NewmanUtils.run(args,context);
+        NewmanUtils.run(args, context);
     }
 
 

@@ -1,6 +1,9 @@
 package com.yizhi.student.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +36,6 @@ import com.yizhi.student.service.StudentInfoService;
 @RequestMapping("/student/studentInfo")
 public class StudentInfoController {
 
-	
 
 
 	@Autowired
@@ -44,8 +46,11 @@ public class StudentInfoController {
 	@PostMapping("/save")
 	@RequiresPermissions("student:studentInfo:add")
 	public R save(StudentInfoDO studentInfoDO){
-	
-		return null;
+		int flag = studentInfoService.save(studentInfoDO);
+		if (flag > 0) {
+			return R.ok();
+		}
+		return R.error();
 	}
 
 	/**
@@ -55,8 +60,15 @@ public class StudentInfoController {
 	@GetMapping("/list")
 	@RequiresPermissions("student:studentInfo:studentInfo")
 	public PageUtils list(@RequestParam Map<String, Object> params){
-
-		return null;
+		if (params.get("sort")!=null) {
+			params.put("sort",BeanHump.camelToUnderline(params.get("sort").toString()));
+		}
+		//查询列表数据
+		Query query = new Query(params);
+		List<StudentInfoDO> studentInfoList = studentInfoService.list(query);
+		int total = studentInfoService.count(query);
+		PageUtils pageUtils = new PageUtils(studentInfoList, total,query.getCurrPage(),query.getPageSize());
+		return pageUtils;
 
 	}
 
@@ -69,8 +81,11 @@ public class StudentInfoController {
 	@PostMapping("/update")
 	@RequiresPermissions("student:studentInfo:edit")
 	public R update(StudentInfoDO studentInfo){
-
-		return null;
+		int flag = studentInfoService.update(studentInfo);
+		if (flag > 0) {
+			return R.ok();
+		}
+		return R.error();
 	}
 
 	/**
@@ -81,7 +96,11 @@ public class StudentInfoController {
 	@ResponseBody
 	@RequiresPermissions("student:studentInfo:remove")
 	public R remove( Integer id){
-		return null;
+		int flag = studentInfoService.remove(id);
+		if (flag > 0) {
+			return R.ok();
+		}
+		return R.error();
 	}
 	
 	/**
@@ -92,8 +111,11 @@ public class StudentInfoController {
 	@ResponseBody
 	@RequiresPermissions("student:studentInfo:batchRemove")
 	public R remove(@RequestParam("ids[]") Integer[] ids){
-
-		return null;
+		int i = studentInfoService.batchRemove(ids);
+		if (i > 0) {
+			return R.ok();
+		}
+		return R.error();
 	}
 
 
